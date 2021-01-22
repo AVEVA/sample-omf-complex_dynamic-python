@@ -18,7 +18,7 @@ request 2.23.0
 
 ## Details
 
-See [ReadMe](../)
+See [ReadMe](https://github.com/osisoft/OSI-Samples-OMF/blob/master/docs/COMPLEX_DYNAMIC_README.md)
 
 ### Configuration
 
@@ -98,5 +98,5 @@ or
 
 ---
 
-For the OMF landing page [ReadMe](../../../)  
-For the OSIsoft Samples landing page [ReadMe](https://github.com/osisoft/OSI-Samples)
+For the main OMF samples page on master [ReadMe](https://github.com/osisoft/OSI-Samples-OMF)  
+For the main OSIsoft samples page on master [ReadMe](https://github.com/osisoft/OSI-Samples)
