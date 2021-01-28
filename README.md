@@ -1,6 +1,6 @@
 # Complex Dynamic OMF Python Sample
 
-**Version:** 1.0.5
+**Version:** 1.0.6
 
 ---
 
@@ -83,7 +83,7 @@ An OMF endpoint must be properly set up and configured.
 1. Open the folder with your favorite IDE
 1. Update `config.ini` with your credentials
 1. Check and update the program to ensure you are sending to OCS or PI.
-1. Run `program.py` from commandline run `python program.py`
+1. Run `sample.py` from commandline run `python sample.py`
 
 ## Testing the Sample
 
