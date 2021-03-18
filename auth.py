@@ -43,7 +43,7 @@ def getToken():
     assert tokenUrl.geturl().startswith(baseURL)
 
     tokenInformation = requests.post(
-        tokenUrl,
+        tokenUrl.geturl(),
         data={"client_id": config['id'],
               "client_secret": config['password'],
               "grant_type": "client_credentials"},
