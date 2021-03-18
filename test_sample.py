@@ -2,6 +2,7 @@
 import json
 import requests
 import traceback
+import time
 
 import sample as sample
 import sendOMF as sendOMF
@@ -25,6 +26,7 @@ def checkData():
 
 
 def checkLastOCSVal():
+    time.sleep(10)
     msg_headers = auth.sanitizeHeaders({
         "Authorization": auth.getAuthHeader()
     })
