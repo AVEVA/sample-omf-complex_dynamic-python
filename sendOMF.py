@@ -30,10 +30,10 @@ def sendDataCreate(data):
 def sendCall(msg_body, message_type, action):
     global config
 
-    headers = getHeaders(message_type, action)
-    auth = None
+    headers = auth.sanitizeHeaders(getHeaders(message_type, action))
+    idPwd = None
     if config['destinationPI']:
-        auth = (config['id'], config['password'])
+        idPwd = (config['id'], config['password'])
 
     response = requests.post(
         config['omfURL'],
@@ -41,7 +41,7 @@ def sendCall(msg_body, message_type, action):
         data=msg_body,
         verify=config['verify'],
         timeout=config['timeout'],
-        auth=auth
+        auth=idPwd
     )
 
     # response code in 200s if the request was successful!

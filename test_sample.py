@@ -25,9 +25,9 @@ def checkData():
 
 
 def checkLastOCSVal():
-    msg_headers = {
+    msg_headers = auth.sanitizeHeaders({
         "Authorization": auth.getAuthHeader()
-    }
+    })
     url = config['omfURL'].split('/omf')[0] + \
         '/streams/Tank1Measurements/data/last'
     response = requests.get(
@@ -68,7 +68,6 @@ def test_main():
         print
         traceback.print_exc()
         print
-        success = False
         raise ex
 
     finally:
