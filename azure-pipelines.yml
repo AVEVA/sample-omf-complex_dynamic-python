@@ -41,7 +41,7 @@ jobs:
   - job: Tests_OCS
     pool:
       name: 00-OSIManaged-Containers
-      demands: Agent.OS -equals Windows_NT
+      demands: Agent.OS -equals Linux
     steps:
       - template: '/miscellaneous/build_templates/config.yml@templates'
         parameters:
