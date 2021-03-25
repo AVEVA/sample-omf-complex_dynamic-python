@@ -2,6 +2,7 @@
 import json
 import requests
 import traceback
+import time
 
 import sample as sample
 import sendOMF as sendOMF
@@ -25,9 +26,10 @@ def checkData():
 
 
 def checkLastOCSVal():
-    msg_headers = {
+    time.sleep(10)
+    msg_headers = auth.sanitizeHeaders({
         "Authorization": auth.getAuthHeader()
-    }
+    })
     url = config['omfURL'].split('/omf')[0] + \
         '/streams/Tank1Measurements/data/last'
     response = requests.get(
@@ -68,7 +70,6 @@ def test_main():
         print
         traceback.print_exc()
         print
-        success = False
         raise ex
 
     finally:

@@ -2,6 +2,7 @@
 import requests
 import time
 import json
+from urllib.parse import urlparse
 
 
 config = {}
@@ -36,9 +37,13 @@ def getToken():
         raise ValueError
 
     tokenEndpoint = json.loads(discoveryUrl.content)["token_endpoint"]
+    tokenUrl = urlparse(tokenEndpoint)
+    # Validate URL
+    assert tokenUrl.scheme == 'https'
+    assert tokenUrl.geturl().startswith(baseURL)
 
     tokenInformation = requests.post(
-        tokenEndpoint,
+        tokenUrl.geturl(),
         data={"client_id": config['id'],
               "client_secret": config['password'],
               "grant_type": "client_credentials"},
@@ -63,3 +68,13 @@ def getAuthHeader():
         return None
     if config['destinationPI']:
         return None
+
+
+def sanitizeHeaders(headers):
+    validated_headers = {}
+
+    for key in headers:
+        if key in {'Authorization', 'messagetype', 'action', 'messageformat', 'omfversion', 'x-requested-with'}:
+            validated_headers[key] = headers[key]
+
+    return validated_headers

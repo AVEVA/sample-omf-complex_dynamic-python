@@ -1,5 +1,12 @@
 # Version History
 
+## 1.0.7 / 2021-03-18
+
+- Updated pipeline to use internal agent pool
+- Updated pipeline to reference main branch
+- Fixed potential vulnerabilities detected by static analysis
+- Improved stability of OCS test
+
 ## 1.0.6 / 2021-01-26
 
 - Updated dependencies
