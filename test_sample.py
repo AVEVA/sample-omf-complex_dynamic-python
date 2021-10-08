@@ -1,41 +1,41 @@
-
 import json
 import requests
 import traceback
 import time
 
-import sample as sample
-import sendOMF as sendOMF
-import omfHelper as omfHelper
-import auth as auth
+import sample
+import sendOMF
+import omfHelper
+import auth
+from EndpointTypes import EndpointTypes
 
 config = {}
 
 
-def suppressError(call):
+def suppress_error(call):
     try:
         call()
     except Exception as e:
         print(f'Encountered Error: {e}')
 
 
-def checkData():
-    if config['destinationOCS']:
-        checkLastOCSVal()
+def check_data(endpoint):
+    if endpoint["EndpointType"] == EndpointTypes.OCS:
+        check_last_ocs_val(endpoint)
     # don't have to check others as they are sync and we get instant feedback on success from the app itself
 
 
-def checkLastOCSVal():
+def check_last_ocs_val(endpoint):
     time.sleep(10)
-    msg_headers = auth.sanitizeHeaders({
-        "Authorization": auth.getAuthHeader()
+    msg_headers = auth.sanitize_headers({
+        "authorization": auth.get_auth_header(endpoint)
     })
-    url = config['omfURL'].split('/omf')[0] + \
+    url = endpoint['OmfEndpoint'].split('/omf')[0] + \
         '/streams/Tank1Measurements/data/last'
     response = requests.get(
         url,
         headers=msg_headers,
-        verify=config['verify']
+        verify=endpoint["VerifySSL"]
     )
 
     # response code in 200s if the request was successful!
@@ -49,21 +49,25 @@ def checkLastOCSVal():
             f'OMF message was unsuccessful,  {response.status_code}:{response.text}')
 
 
-def sendTypeDelete(_type):
-    sendOMF.sendCall(json.dumps(_type), 'type', 'delete')
+def send_type_delete(endpoint, _type):
+    sendOMF.send_call(endpoint, json.dumps(_type), 'type', 'delete')
 
 
-def sendContainerDelete(container):
-    sendOMF.sendCall(json.dumps(container), 'container', 'delete')
+def send_container_delete(endpoint, container):
+    sendOMF.send_call(endpoint, json.dumps(container), 'container', 'delete')
 
 
 def test_main():
-    global config
-    # Tests to make sure the sample runs as expected
-
+    '''Tests to make sure the sample runs as expected'''
+    
+    endpoints = []
     try:
-        config = sample.main(True, ['2,3', 'n'])
-        checkData()
+        endpoints, omf_version = sample.main(True, ['2,3', 'n'])
+        sendOMF.set_omf_version(omf_version)
+
+        for endpoint in endpoints:
+            if endpoint['Selected']:
+                check_data(endpoint)
 
     except Exception as ex:
         print(f'Encountered Error: {ex}.')
@@ -76,8 +80,10 @@ def test_main():
         print('Deletes')
         print
 
-        suppressError(lambda: sendContainerDelete(omfHelper.getContainer()))
-        suppressError(lambda: sendTypeDelete(omfHelper.getType()))
+        for endpoint in endpoints:
+            if endpoint['Selected']:
+                suppress_error(lambda: send_container_delete(endpoint, omfHelper.get_container()))
+                suppress_error(lambda: send_type_delete(endpoint, omfHelper.get_type()))
 
 
 if __name__ == '__main__':
