@@ -2,7 +2,6 @@
 # Import necessary packages
 # ************************************************************************
 
-import enum
 import json
 import sys
 

@@ -26,14 +26,6 @@ resources:
 
 variables:
   - template: '/miscellaneous/build_templates/variables.yml@templates'
-  - name: CredFile
-    value: config.ini
-  - name: CredFileLibrary
-    value: product-readiness.omf_dc_python.ocs.ini
-  - name: CredFileLibraryOP
-    value: product-readiness.omf_dc_python.pi.ini
-  - name: CredFileLibraryEDS
-    value: product-readiness.omf_dc_python.eds.ini
   - name: analysisProject
     value: OMF_DC_Python
 
@@ -42,11 +34,25 @@ jobs:
     pool:
       name: 00-OSIManaged-Containers
       demands: Agent.OS -equals Linux
+    variables:
+      - name: Endpoints.0.Selected
+        value: true
+      - name: Endpoints.1.Selected
+        value: false
+      - name: Endpoints.2.Selected
+        value: false
+      - name: Endpoints.0.TenantId
+        value: $(TenantId)
+      - name: Endpoints.0.NamespaceId
+        value: $(NamespaceId)
+      - name: Endpoints.0.ClientId
+        value: $(ClientId)
+      - name: Endpoints.0.ClientSecret
+        value: $(ClientSecret)
     steps:
-      - template: '/miscellaneous/build_templates/config.yml@templates'
+      - template: '/miscellaneous/build_templates/appsettings.yml@templates'
         parameters:
-          fileOriginal: $(CredFile)
-          fileLibrary: $(CredFileLibrary)
+          secrets: 'TenantId, NamespaceId, ClientId, ClientSecret'
 
       - script: |
           echo Install tools
@@ -57,7 +63,7 @@ jobs:
           echo Install requirements
           pip install -r requirements.txt
           echo Run tests
-          python -m pytest ./test_sample.py --junitxml=junit/test-results.xml 
+          python -m pytest ./test.py --junitxml=junit/test-results.xml 
           echo Complete
         displayName: 'Run tests'
 
@@ -73,16 +79,32 @@ jobs:
     pool:
       name: 00-OSIManaged-Test
       demands: COMPUTERNAME -equals $(buildAgent)
+    variables:
+      - name: Endpoints.0.Selected
+        value: false
+      - name: Endpoints.1.Selected
+        value: false
+      - name: Endpoints.2.Selected
+        value: true
+      - name: Endpoints.2.Resource
+        value: $(PIWebAPI)
+      - name: Endpoints.2.Username
+        value: $(Username)
+      - name: Endpoints.2.Password
+        value: $(Password)
+      - name: Endpoints.2.DataArchiveName
+        value: $(DataArchiveName)
+      - name: Endpoints.2.VerifySSL
+        value: false
     steps:
-      - template: '/miscellaneous/build_templates/config.yml@templates'
+      - template: '/miscellaneous/build_templates/appsettings.yml@templates'
         parameters:
-          fileOriginal: $(CredFile)
-          fileLibrary: $(CredFileLibraryOP)
+          secrets: 'Username, Password, PIWebAPI, DataArchiveName'
 
       - script: pip install -r requirements.txt
         displayName: 'Install requirements'
 
-      - script: python -m pytest --junitxml=junit/test-results.xml ./test_sample.py
+      - script: python -m pytest --junitxml=junit/test-results.xml ./test.py
         displayName: 'Run tests'
 
       - task: PublishTestResults@2
@@ -97,16 +119,20 @@ jobs:
     pool:
       name: 00-OSIManaged-Test
       demands: COMPUTERNAME -equals $(buildAgent)
+    variables:
+      - name: Endpoints.0.Selected
+        value: false
+      - name: Endpoints.1.Selected
+        value: true
+      - name: Endpoints.2.Selected
+        value: false
     steps:
-      - template: '/miscellaneous/build_templates/config.yml@templates'
-        parameters:
-          fileOriginal: $(CredFile)
-          fileLibrary: $(CredFileLibraryEDS)
+      - template: '/miscellaneous/build_templates/appsettings.yml@templates'
 
       - script: pip install -r requirements.txt
         displayName: 'Install requirements'
 
-      - script: python -m pytest --junitxml=junit/test-results.xml ./test_sample.py
+      - script: python -m pytest --junitxml=junit/test-results.xml ./test.py
         displayName: 'Run tests'
 
       - task: PublishTestResults@2

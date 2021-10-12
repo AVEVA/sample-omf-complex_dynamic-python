@@ -3,7 +3,7 @@ import requests
 import traceback
 import time
 
-import sample
+import program
 import sendOMF
 import omfHelper
 import auth
@@ -62,7 +62,7 @@ def test_main():
     
     endpoints = []
     try:
-        endpoints, omf_version = sample.main(True, ['2,3', 'n'])
+        endpoints, omf_version = program.main(True, ['2,3', 'n'])
         sendOMF.set_omf_version(omf_version)
 
         for endpoint in endpoints:
