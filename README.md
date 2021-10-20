@@ -1,6 +1,6 @@
 # Complex Dynamic OMF Python Sample
 
-**Version:** 1.0.9
+**Version:** 1.0.10
 
 ---
 
@@ -97,6 +97,6 @@ or
 1. Run `pytest test_sample.py`
 
 ---
-
+For the main OMF Complex Dynamic samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OMF/blob/main/docs/COMPLEX_DYNAMIC.md)  
 For the main OMF samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OMF)  
 For the main OSIsoft samples page [ReadMe](https://github.com/osisoft/OSI-Samples)

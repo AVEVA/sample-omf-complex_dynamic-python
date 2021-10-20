@@ -1,5 +1,9 @@
 # Version History
 
+## 1.0.10 / 2021-10-20
+
+- Added link back to the main complex dynamic samples page
+
 ## 1.0.9 / 2021-08-10
 
 - Cleaned up gitignore
