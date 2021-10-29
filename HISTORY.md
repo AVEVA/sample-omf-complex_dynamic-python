@@ -1,8 +1,13 @@
 # Version History
 
-## 1.0.10 / 2021-10-20
+## 1.1.1 / 2021-10-29
 
 - Added link back to the main complex dynamic samples page
+
+## 1.1.0 / 2021-10-19
+
+- Update pipelines to use Azure Key Vault for secrets
+- Changed config.ini into an appsettings.json file
 
 ## 1.0.9 / 2021-08-10
 

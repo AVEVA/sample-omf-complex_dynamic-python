@@ -4,77 +4,72 @@ import time
 import json
 from urllib.parse import urlparse
 
-
-config = {}
-__expiration = None
-__token = None
+from EndpointTypes import EndpointTypes
 
 
-def setConfig(_config):
-    global config
-    config = _config
+def get_token(endpoint):
+    '''Gets the token for the omfendpoint'''
 
+    endpoint_type = endpoint['EndpointType']
+    # return an empty string if the endpoint is not an OCS type
+    if endpoint_type != EndpointTypes.OCS:
+        return ''
 
-def getToken():
-    # Gets the oken for the omfsendpoint
-    global __expiration, __token, config
-
-    if __expiration and ((__expiration - time.time()) > 5 * 60):
-        return __token
+    if (('expiration' in endpoint) and (endpoint['expiration'] - time.time()) > 5 * 60):
+        return endpoint["token"]
 
     # we can't short circuit it, so we must go retreive it.
-    baseURL = config['omfURL'].split('.com/')[0] + '.com'
 
-    discoveryUrl = requests.get(
-        baseURL + "/identity/.well-known/openid-configuration",
-        headers={"Accept": "application/json"},
-        verify=config['verify'])
+    discovery_url = requests.get(
+        endpoint['Resource'] + '/identity/.well-known/openid-configuration',
+        headers={'Accept': 'application/json'},
+        verify=endpoint['VerifySSL'])
 
-    if discoveryUrl.status_code < 200 or discoveryUrl.status_code >= 300:
-        discoveryUrl.close()
-        print("Failed to get access token endpoint from discovery URL: {status}:{reason}".
-              format(status=discoveryUrl.status_code, reason=discoveryUrl.text))
-        raise ValueError
+    if discovery_url.status_code < 200 or discovery_url.status_code >= 300:
+        discovery_url.close()
+        raise Exception(f'Failed to get access token endpoint from discovery URL: {discovery_url.status_code}:{discovery_url.text}')
 
-    tokenEndpoint = json.loads(discoveryUrl.content)["token_endpoint"]
-    tokenUrl = urlparse(tokenEndpoint)
+    token_endpoint = json.loads(discovery_url.content)['token_endpoint']
+    token_url = urlparse(token_endpoint)
     # Validate URL
-    assert tokenUrl.scheme == 'https'
-    assert tokenUrl.geturl().startswith(baseURL)
+    assert token_url.scheme == 'https'
+    assert token_url.geturl().startswith(endpoint['Resource'])
 
-    tokenInformation = requests.post(
-        tokenUrl.geturl(),
-        data={"client_id": config['id'],
-              "client_secret": config['password'],
-              "grant_type": "client_credentials"},
-        verify=config['verify'])
+    token_information = requests.post(
+        token_url.geturl(),
+        data={'client_id': endpoint['ClientId'],
+              'client_secret': endpoint['ClientSecret'],
+              'grant_type': 'client_credentials'},
+        verify=endpoint['VerifySSL'])
 
-    token = json.loads(tokenInformation.content)
+    token = json.loads(token_information.content)
 
     if token is None:
-        raise Exception("Failed to retrieve Token")
+        raise Exception('Failed to retrieve Token')
 
     __expiration = float(token['expires_in']) + time.time()
     __token = token['access_token']
+
+    # cache the results
+    endpoint['expiration'] = __expiration
+    endpoint['token'] = __token
+
     return __token
 
 
-def getAuthHeader():
-    global config
+def get_auth_header(endpoint):
 
-    if config['destinationOCS']:
-        return ("Bearer %s" % getToken())
-    if config['destinationEDS']:
-        return None
-    if config['destinationPI']:
+    if endpoint['EndpointType'] == EndpointTypes.OCS:
+        return (f'Bearer {get_token(endpoint)}')
+    else:
         return None
 
 
-def sanitizeHeaders(headers):
+def sanitize_headers(headers):
     validated_headers = {}
 
     for key in headers:
-        if key in {'Authorization', 'messagetype', 'action', 'messageformat', 'omfversion', 'x-requested-with'}:
+        if key in {'authorization', 'messagetype', 'action', 'messageformat', 'omfversion', 'x-requested-with'}:
             validated_headers[key] = headers[key]
 
     return validated_headers
