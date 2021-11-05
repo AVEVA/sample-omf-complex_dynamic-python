@@ -1,5 +1,9 @@
 # Version History
 
+## 1.1.1 / 2021-10-29
+
+- Added link back to the main complex dynamic samples page
+
 ## 1.1.0 / 2021-10-19
 
 - Update pipelines to use Azure Key Vault for secrets

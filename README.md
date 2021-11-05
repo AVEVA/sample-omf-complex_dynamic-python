@@ -1,6 +1,6 @@
 # Complex Dynamic OMF Python Sample
 
-**Version:** 1.1.0
+**Version:** 1.1.1
 
 ---
 
@@ -137,6 +137,6 @@ The format of the configuration for a PI endpoint is shown below along with desc
 | WebRequestTimeoutSeconds | optional | integer        | A feature flag for changing how long it takes for a request to time out                                                                                                                                                                                                                 |
 
 ---
-
+For the main OMF Complex Dynamic samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OMF/blob/main/docs/COMPLEX_DYNAMIC.md)  
 For the main OMF samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OMF)  
 For the main OSIsoft samples page [ReadMe](https://github.com/osisoft/OSI-Samples)
