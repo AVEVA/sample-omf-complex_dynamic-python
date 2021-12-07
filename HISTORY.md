@@ -1,5 +1,9 @@
 # Version History
 
+## 1.1.2 / 2021-12-07
+
+- Update pipelines to reference internal analysis templates
+
 ## 1.1.1 / 2021-10-29
 
 - Added link back to the main complex dynamic samples page
