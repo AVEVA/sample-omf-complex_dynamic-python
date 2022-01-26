@@ -20,7 +20,7 @@ def suppress_error(call):
 
 
 def check_data(endpoint):
-    if endpoint["EndpointType"] == EndpointTypes.OCS:
+    if endpoint["EndpointType"] == EndpointTypes.ADH:
         check_last_ocs_val(endpoint)
     # don't have to check others as they are sync and we get instant feedback on success from the app itself
 
