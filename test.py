@@ -21,11 +21,11 @@ def suppress_error(call):
 
 def check_data(endpoint):
     if endpoint["EndpointType"] == EndpointTypes.ADH:
-        check_last_ocs_val(endpoint)
+        check_last_adh_val(endpoint)
     # don't have to check others as they are sync and we get instant feedback on success from the app itself
 
 
-def check_last_ocs_val(endpoint):
+def check_last_adh_val(endpoint):
     time.sleep(10)
     msg_headers = auth.sanitize_headers({
         "authorization": auth.get_auth_header(endpoint)
