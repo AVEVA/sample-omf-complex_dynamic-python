@@ -33,11 +33,19 @@ variables:
   - name: analysisProject
     value: OMF_DC_Python
 
+parameters:
+  - name: containerDemandsADH
+    default: Agent.OS -equals Linux
+  - name: containerDemandsEDS
+    default: PYTHON
+  - name: containerDemandsOnPrem
+    default: Agent.OS -equals Linux
+
 jobs:
   - job: Tests_ADH
     pool:
       name: 00-OSIManaged-Containers
-      demands: Agent.OS -equals Linux
+      demands: ${{ parameters.containerDemandsADH }}
     variables:
       - name: Endpoints.0.Selected
         value: true
@@ -84,7 +92,7 @@ jobs:
   - job: Tests_PI
     pool:
       name: 00-OSIManaged-Containers
-      demands: Agent.OS -equals Linux
+      demands: ${{ parameters.containerDemandsOnPrem }}
     variables:
       - name: Endpoints.0.Selected
         value: false
@@ -131,7 +139,7 @@ jobs:
   - job: Tests_EDS
     pool:
       name: 00-OSIManaged-Build
-      demands: PYTHON
+      demands: ${{ parameters.containerDemandsEDS }}
     variables:
       - name: Endpoints.0.Selected
         value: false
