@@ -13,13 +13,13 @@
 
 ---
 
-This sample uses OSIsoft Message Format to send data to AVEVA Data Hub, Edge Data Store, or PI Web API.
+This sample uses Open Message Format to send data to AVEVA Data Hub, Edge Data Store, or PI Web API.
 
 ## Details
 
 See [ReadMe](https://github.com/osisoft/OSI-Samples-OMF/blob/main/docs/COMPLEX_DYNAMIC_README.md)
 
-## OSIsoft Message Format Endpoints
+## Open Message Format Endpoints
 
 The sample is configured using the file [appsettings.placeholder.json](appsettings.placeholder.json). Before editing, rename this file to `appsettings.json`. This repository's `.gitignore` rules should prevent the file from ever being checked in to any fork or branch, to ensure credentials are not compromised.
 
