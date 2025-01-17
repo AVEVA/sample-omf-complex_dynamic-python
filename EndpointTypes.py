@@ -1,6 +1,6 @@
 from enum import Enum
  
 class EndpointTypes(Enum):
-    ADH = 'ADH'
+    CDS = 'CDS'
     EDS = 'EDS'
     PI = 'PI'

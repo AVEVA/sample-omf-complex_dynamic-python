@@ -11,8 +11,8 @@ def get_token(endpoint):
     '''Gets the token for the omfendpoint'''
 
     endpoint_type = endpoint['EndpointType']
-    # return an empty string if the endpoint is not an ADH type
-    if endpoint_type != EndpointTypes.ADH:
+    # return an empty string if the endpoint is not a Cds type
+    if endpoint_type != EndpointTypes.CDS:
         return ''
 
     if (('expiration' in endpoint) and (endpoint['expiration'] - time.time()) > 5 * 60):
@@ -59,7 +59,7 @@ def get_token(endpoint):
 
 def get_auth_header(endpoint):
 
-    if endpoint['EndpointType'] == EndpointTypes.ADH:
+    if endpoint['EndpointType'] == EndpointTypes.CDS:
         return (f'Bearer {get_token(endpoint)}')
     else:
         return None

@@ -7,4 +7,4 @@ def get_container():
     return  [{"id": "Tank1Measurements", "typeid": "TankMeasurement", "typeVersion": "1.0.0.0"}]
 
 def get_data(pressure, temperature):
-    return  [{ "containerid": "Tank1Measurements", "values": [{ "Time": datetime.datetime.utcnow().isoformat(), "Pressure": pressure, "Temperature": temperature}] }]
+    return  [{ "containerid": "Tank1Measurements", "values": [{ "Time": datetime.datetime.now(datetime.timezone.utc).isoformat(), "Pressure": pressure, "Temperature": temperature}] }]

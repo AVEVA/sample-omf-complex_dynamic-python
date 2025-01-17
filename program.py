@@ -41,8 +41,8 @@ def get_appsettings():
         endpoint["EndpointType"] = EndpointTypes(endpoint["EndpointType"])
         endpoint_type = endpoint["EndpointType"]
 
-        # If the endpoint is ADH
-        if endpoint_type == EndpointTypes.ADH:
+        # If the endpoint is CDS
+        if endpoint_type == EndpointTypes.CDS:
             base_endpoint = f'{endpoint["Resource"]}/api/{endpoint["ApiVersion"]}' + \
                 f'/tenants/{endpoint["TenantId"]}/namespaces/{endpoint["NamespaceId"]}'
 
