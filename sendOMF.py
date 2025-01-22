@@ -3,7 +3,7 @@ import json
 import auth
 from EndpointTypes import EndpointTypes
 
-omf_version = '1.1'
+omf_version = '1.2'
 
 def set_omf_version(version):
     global omf_version

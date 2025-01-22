@@ -1,5 +1,9 @@
 # Version History
 
+## 1.2.9 / 2025-01-17
+
+- Upgrade to OMF 1.2
+
 ## 1.2.8 / 2023-10-13
 
 - Migrate Pipelines
